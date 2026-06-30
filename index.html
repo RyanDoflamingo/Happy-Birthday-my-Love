@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Ropa — My Love, Twenty Years of Light</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0A0D10;
+    --forest:#10241D;
+    --forest-2:#16352A;
+    --wine:#5C1B2A;
+    --wine-2:#7A2638;
+    --gold:#C9A24B;
+    --gold-bright:#E9CD86;
+    --ivory:#F3ECDC;
+    --ivory-dim:#cfc6ad;
+    --line: rgba(201,162,75,0.35);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ink);
+    color:var(--ivory);
+    font-family:'EB Garamond', serif;
+    overflow-x:hidden;
+    cursor:default;
+  }
+  ::selection{background:var(--gold); color:#1a1a1a;}
+
+  /* ---------- scrollbar ---------- */
+  ::-webkit-scrollbar{width:10px;}
+  ::-webkit-scrollbar-track{background:var(--ink);}
+  ::-webkit-scrollbar-thumb{background:linear-gradient(var(--gold), var(--wine)); border-radius:10px;}
+
+  h1,h2,h3,.display{
+    font-family:'Cinzel', serif;
+    letter-spacing:0.04em;
+    font-weight:600;
+  }
+
+  /* ============ BACKGROUND TEXTURE ============ */
+  .bg-noise{
+    position:fixed; inset:0; pointer-events:none; z-index:0; opacity:0.05; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .vignette{
+    position:fixed; inset:0; pointer-events:none; z-index:1;
+    background:radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.55) 100%);
+  }
+
+  /* ============ SEAL INTRO ============ */
+  #seal-overlay{
+    position:fixed; inset:0; z-index:999;
+    background:radial-gradient(ellipse at center, var(--forest) 0%, #060807 75%);
+    display:flex; align-items:center; justify-content:center; flex-direction:column;
+    transition:opacity 1.4s ease, visibility 1.4s ease;
+  }
+  #seal-overlay.opened{opacity:0; visibility:hidden;}
+  .seal{
+    width:160px; height:160px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, var(--wine-2), var(--wine) 60%, #3a0f1a 100%);
+    border:3px solid var(--gold);
+    box-shadow:0 0 60px rgba(201,162,75,0.25), inset 0 0 30px rgba(0,0,0,0.5);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+    transition:transform .5s ease, box-shadow .5s ease;
+    animation:pulseSeal 3.2s ease-in-out infinite;
+  }
+  .seal:hover{transform:scale(1.05); box-shadow:0 0 90px rgba(201,162,75,0.45), inset 0 0 30px rgba(0,0,0,0.5);}
+  @keyframes pulseSeal{0%,100%{box-shadow:0 0 50px rgba(201,162,75,0.2);}50%{box-shadow:0 0 80px rgba(201,162,75,0.4);}}
+  .seal-initial{font-family:'Cinzel', serif; font-size:54px; color:var(--gold-bright); font-weight:700;}
+  .seal-caption{margin-top:34px; font-family:'Cormorant Garamond', serif; font-style:italic; font-size:19px; color:var(--ivory-dim); letter-spacing:0.06em;}
+  .seal-sub{margin-top:8px; font-family:'Cinzel'; font-size:11px; letter-spacing:0.35em; color:var(--gold); text-transform:uppercase;}
+
+  /* ============ NAV / MUSIC TOGGLE ============ */
+  #music-toggle{
+    position:fixed; top:24px; right:24px; z-index:500;
+    width:54px; height:54px; border-radius:50%;
+    border:1px solid var(--gold); background:rgba(10,13,16,0.6); backdrop-filter:blur(6px);
+    color:var(--gold-bright); display:flex; align-items:center; justify-content:center;
+    cursor:pointer; transition:all .3s ease;
+  }
+  #music-toggle:hover{background:rgba(201,162,75,0.15); transform:scale(1.08);}
+  #music-toggle .bars{display:flex; gap:3px; align-items:flex-end; height:18px;}
+  #music-toggle .bars span{display:block; width:3px; background:var(--gold-bright); border-radius:2px; animation:eq 1s infinite ease-in-out;}
+  #music-toggle .bars span:nth-child(1){height:6px; animation-delay:0s;}
+  #music-toggle .bars span:nth-child(2){height:16px; animation-delay:.2s;}
+  #music-toggle .bars span:nth-child(3){height:10px; animation-delay:.4s;}
+  #music-toggle.paused .bars span{animation-play-state:paused; height:4px;}
+  @keyframes eq{0%,100%{transform:scaleY(0.4);}50%{transform:scaleY(1);}}
+
+  /* ============ SECTION GENERIC ============ */
+  section{position:relative; z-index:2; padding:140px 6vw;}
+  .eyebrow{
+    font-family:'Cinzel'; font-size:12px; letter-spacing:0.4em; text-transform:uppercase;
+    color:var(--gold); display:flex; align-items:center; gap:16px; margin-bottom:28px;
+  }
+  .eyebrow::before, .eyebrow::after{content:""; height:1px; width:40px; background:var(--gold); opacity:0.6;}
+
+  /* ============ HERO ============ */
+  #hero{
+    min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; position:relative; overflow:hidden;
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(92,27,42,0.35), transparent 60%),
+      radial-gradient(ellipse at 50% 100%, rgba(22,53,42,0.6), transparent 60%),
+      var(--ink);
+  }
+  .crest{
+    width:90px; height:90px; margin-bottom:30px;
+    border:1px solid var(--gold); border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Cinzel'; font-size:13px; letter-spacing:0.2em; color:var(--gold);
+    position:relative;
+  }
+  .crest::before{
+    content:""; position:absolute; inset:-10px; border:1px solid var(--line); border-radius:50%;
+  }
+  #hero h1{
+    font-size:clamp(48px, 9vw, 118px); line-height:1.02; color:var(--ivory);
+    text-shadow:0 0 40px rgba(201,162,75,0.25);
+  }
+  #hero h1 em{
+    font-style:italic; font-family:'Cormorant Garamond'; color:var(--gold-bright); font-weight:500;
+  }
+  .hero-sub{
+    margin-top:26px; font-family:'Cormorant Garamond'; font-style:italic; font-size:clamp(18px,2.4vw,26px);
+    color:var(--ivory-dim); max-width:680px;
+  }
+  .age-badge{
+    margin-top:50px; display:flex; align-items:center; gap:22px; flex-wrap:wrap; justify-content:center;
+  }
+  .age-num{
+    font-family:'Cinzel'; font-weight:900; font-size:clamp(70px,10vw,130px); color:transparent;
+    -webkit-text-stroke:1.5px var(--gold-bright);
+    line-height:1;
+  }
+  .age-label{
+    text-align:left; font-family:'Cinzel'; font-size:13px; letter-spacing:0.3em; color:var(--ivory-dim); text-transform:uppercase;
+  }
+  .age-label span{display:block; font-family:'Cormorant Garamond'; font-style:italic; font-size:17px; letter-spacing:0; color:var(--gold-bright); margin-top:4px;}
+
+  .ledger{
+    margin-top:64px; display:flex; gap:36px; flex-wrap:wrap; justify-content:center;
+  }
+  .ledger-item{
+    border:1px solid var(--line); padding:22px 30px; min-width:130px; text-align:center; position:relative;
+    background:rgba(255,255,255,0.015);
+  }
+  .ledger-item .num{font-family:'Cinzel'; font-weight:700; font-size:32px; color:var(--gold-bright);}
+  .ledger-item .lbl{font-family:'Cinzel'; font-size:10px; letter-spacing:0.25em; color:var(--ivory-dim); text-transform:uppercase; margin-top:8px;}
+
+  .scroll-cue{
+    position:absolute; bottom:38px; left:50%; transform:translateX(-50%);
+    font-family:'Cinzel'; font-size:10px; letter-spacing:0.35em; color:var(--ivory-dim); text-transform:uppercase;
+    display:flex; flex-direction:column; align-items:center; gap:10px;
+  }
+  .scroll-cue .line{width:1px; height:40px; background:linear-gradient(var(--gold), transparent); animation:cueMove 2s infinite;}
+  @keyframes cueMove{0%{opacity:0.2;}50%{opacity:1;}100%{opacity:0.2;}}
+
+  /* ============ TITLES / DECREE ============ */
+  #titles{
+    background:linear-gradient(180deg, var(--ink), #0c1410 50%, var(--ink));
+    text-align:center;
+  }
+  .decree-frame{
+    max-width:900px; margin:0 auto; border:1px solid var(--gold); padding:70px 40px;
+    position:relative;
+  }
+  .decree-frame::before, .decree-frame::after{
+    content:""; position:absolute; width:28px; height:28px; border:1px solid var(--gold);
+  }
+  .decree-frame::before{top:-1px; left:-1px; border-right:none; border-bottom:none;}
+  .decree-frame::after{bottom:-1px; right:-1px; border-left:none; border-top:none;}
+  .decree-title{font-family:'Cormorant Garamond'; font-style:italic; font-size:22px; color:var(--gold-bright); margin-bottom:36px;}
+  .titles-grid{
+    display:flex; flex-wrap:wrap; gap:18px 30px; justify-content:center; align-items:center;
+  }
+  .title-chip{
+    font-family:'Cinzel'; font-size:15px; letter-spacing:0.08em; color:var(--ivory);
+    padding:10px 6px; position:relative;
+  }
+  .title-chip:not(:last-child)::after{
+    content:"•"; color:var(--gold); margin-left:18px; opacity:0.6;
+  }
+
+  /* ============ TIMELINE ============ */
+  #timeline{background:var(--ink);}
+  .timeline-wrap{max-width:780px; margin:0 auto; position:relative;}
+  .timeline-wrap::before{
+    content:""; position:absolute; left:21px; top:10px; bottom:10px; width:1px;
+    background:linear-gradient(var(--gold), var(--wine) 50%, var(--gold));
+    opacity:0.5;
+  }
+  .t-item{position:relative; padding-left:64px; margin-bottom:56px;}
+  .t-item:last-child{margin-bottom:0;}
+  .t-dot{
+    position:absolute; left:10px; top:4px; width:24px; height:24px; border-radius:50%;
+    border:1px solid var(--gold); background:var(--ink);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .t-dot::after{content:""; width:7px; height:7px; border-radius:50%; background:var(--gold-bright);}
+  .t-date{font-family:'Cinzel'; font-size:11px; letter-spacing:0.25em; color:var(--gold); text-transform:uppercase;}
+  .t-title{font-family:'Cormorant Garamond'; font-size:28px; font-style:italic; color:var(--ivory); margin:8px 0 6px;}
+  .t-text{color:var(--ivory-dim); font-size:18px; line-height:1.6; max-width:560px;}
+
+  /* ============ GALLERY ============ */
+  #gallery{background:linear-gradient(180deg, var(--ink), var(--forest) 50%, var(--ink));}
+  .gallery-head{text-align:center; max-width:600px; margin:0 auto 80px;}
+  .gallery-head h2{font-size:clamp(34px,5vw,56px); color:var(--ivory);}
+  .gallery-head p{font-family:'Cormorant Garamond'; font-style:italic; color:var(--ivory-dim); font-size:19px; margin-top:18px;}
+
+  .gallery-grid{
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(230px,1fr)); gap:42px; max-width:1200px; margin:0 auto;
+  }
+  .frame{
+    position:relative; aspect-ratio:4/5; border-radius:6px;
+    background:
+      linear-gradient(160deg, rgba(201,162,75,0.08), rgba(92,27,42,0.12)),
+      repeating-linear-gradient(45deg, rgba(255,255,255,0.015) 0 2px, transparent 2px 6px);
+    border:1px solid var(--gold);
+    box-shadow:0 18px 45px rgba(0,0,0,0.5), inset 0 0 0 6px rgba(10,13,16,0.4);
+    display:flex; align-items:center; justify-content:center; flex-direction:column; gap:10px;
+    overflow:hidden; transition:transform .4s ease, box-shadow .4s ease;
+  }
+  .frame:hover{transform:translateY(-8px) scale(1.015); box-shadow:0 26px 60px rgba(0,0,0,0.6);}
+  .frame img{width:100%; height:100%; object-fit:cover; position:absolute; inset:0; z-index:1;}
+  .frame .placeholder-icon{font-family:'Cinzel'; font-size:13px; color:var(--gold); letter-spacing:0.1em; text-align:center; z-index:0; padding:0 16px;}
+  .frame .placeholder-icon b{display:block; font-size:30px; margin-bottom:10px; color:var(--gold-bright); font-weight:400;}
+  .frame .corner{position:absolute; width:16px; height:16px; border:1px solid var(--gold); opacity:0.7; z-index:2;}
+  .frame .corner.tl{top:8px; left:8px; border-right:none; border-bottom:none;}
+  .frame .corner.tr{top:8px; right:8px; border-left:none; border-bottom:none;}
+  .frame .corner.bl{bottom:8px; left:8px; border-right:none; border-top:none;}
+  .frame .corner.br{bottom:8px; right:8px; border-left:none; border-top:none;}
+  .frame .cap{
+    position:absolute; bottom:0; left:0; right:0; z-index:3; padding:14px 12px 12px;
+    background:linear-gradient(transparent, rgba(0,0,0,0.75));
+    font-family:'Cinzel'; font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold-bright);
+  }
+
+  /* ============ POEM ============ */
+  #poem{
+    background:var(--ink);
+    position:relative;
+  }
+  .poem-wrap{max-width:760px; margin:0 auto; position:relative;}
+  .poem-head{text-align:center; margin-bottom:70px;}
+  .poem-head h2{font-size:clamp(32px,5vw,52px); color:var(--ivory);}
+  .stanza{
+    font-family:'Cormorant Garamond'; font-size:clamp(20px,2.6vw,27px); line-height:1.9; color:var(--ivory-dim);
+    margin-bottom:54px; opacity:0; transform:translateY(24px); transition:opacity 1s ease, transform 1s ease;
+  }
+  .stanza.in{opacity:1; transform:translateY(0);}
+  .stanza .dropcap{
+    float:left; font-family:'Cinzel'; font-size:74px; line-height:0.8; padding:8px 12px 0 0; color:var(--gold-bright);
+  }
+  .stanza em{color:var(--gold-bright); font-style:italic;}
+  .poem-sign{
+    text-align:right; font-family:'Cormorant Garamond'; font-style:italic; font-size:22px; color:var(--gold); margin-top:30px;
+  }
+
+  /* ============ CLOSING ============ */
+  #closing{
+    min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center;
+    background:radial-gradient(ellipse at 50% 30%, rgba(92,27,42,0.3), transparent 60%), var(--ink);
+  }
+  .candle{width:3px; height:60px; background:linear-gradient(var(--gold), transparent); margin:0 auto 30px; position:relative;}
+  .flame{
+    position:absolute; top:-22px; left:50%; transform:translateX(-50%);
+    width:14px; height:22px; border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
+    background:radial-gradient(circle at 50% 70%, #fff7d6, var(--gold-bright) 40%, var(--wine-2) 90%);
+    filter:blur(0.3px); animation:flicker 2.4s infinite ease-in-out;
+    box-shadow:0 0 18px 6px rgba(233,205,134,0.35);
+  }
+  @keyframes flicker{0%,100%{transform:translateX(-50%) scale(1) rotate(0deg);}25%{transform:translateX(-48%) scale(1.05) rotate(-2deg);}50%{transform:translateX(-52%) scale(0.96) rotate(2deg);}75%{transform:translateX(-50%) scale(1.03) rotate(-1deg);}}
+  #closing h2{font-size:clamp(30px,5vw,50px); color:var(--ivory); max-width:760px;}
+  #closing .small{font-family:'Cormorant Garamond'; font-style:italic; color:var(--ivory-dim); font-size:19px; margin-top:24px; max-width:520px;}
+  .signature{
+    margin-top:56px; font-family:'Cormorant Garamond'; font-style:italic; font-size:30px; color:var(--gold-bright);
+    border-top:1px solid var(--line); padding-top:24px;
+  }
+  footer{padding:40px; text-align:center; font-family:'Cinzel'; font-size:10px; letter-spacing:0.25em; color:var(--ivory-dim); opacity:0.5;}
+
+  @media (max-width:600px){
+    section{padding:90px 6vw;}
+    .ledger{gap:18px;}
+    .ledger-item{padding:16px 18px; min-width:100px;}
+  }
+
+  [data-reveal]{opacity:0; transform:translateY(28px); transition:opacity .9s ease, transform .9s ease;}
+  [data-reveal].in{opacity:1; transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<div class="bg-noise"></div>
+<div class="vignette"></div>
+
+<!-- ===================== SEAL INTRO ===================== -->
+<div id="seal-overlay">
+  <div class="seal" id="seal-btn">
+    <span class="seal-initial">S</span>
+  </div>
+  <p class="seal-caption">A letter has been sealed for your twentieth year</p>
+  <p class="seal-sub">Break the seal to begin</p>
+</div>
+
+<!-- ===================== MUSIC TOGGLE ===================== -->
+<div id="music-toggle" class="paused" title="Play/Pause music">
+  <div class="bars"><span></span><span></span><span></span></div>
+</div>
+
+<!-- replace this src with your chosen song file or hosted link -->
+<audio id="bg-audio" loop preload="auto">
+  <source src="Tsvodi.mp3" type="audio/mpeg">
+</audio>
+
+<!-- ===================== HERO ===================== -->
+<section id="hero">
+  <div class="crest">S&nbsp;♥&nbsp;S</div>
+  <h1>Happy Birthday,<br><em>my Love</em></h1>
+  <p class="hero-sub">To my love — my Sharo, my princess, my cuddle cakes, the girl that owns my heart.</p>
+
+  <div class="age-badge">
+    <span class="age-num">20</span>
+    <span class="age-label">Years of Her<span>Crowned today, July 1st</span></span>
+  </div>
+
+  <div class="ledger">
+    <div class="ledger-item"><div class="num" id="days-count">000</div><div class="lbl">Days Together</div></div>
+    <div class="ledger-item"><div class="num">17.01</div><div class="lbl">Where We Began</div></div>
+    <div class="ledger-item"><div class="num">01.07</div><div class="lbl">Her Day</div></div>
+  </div>
+
+  <div class="scroll-cue"><span>Unfold</span><span class="line"></span></div>
+</section>
+
+<!-- ===================== TITLES / DECREE ===================== -->
+<section id="titles">
+  <div class="decree-frame" data-reveal>
+    <p class="decree-title">The names of you I cherish the most —</p>
+    <div class="titles-grid">
+      <span class="title-chip">Mama</span>
+      <span class="title-chip">Sharo</span>
+      <span class="title-chip">My Love</span>
+      <span class="title-chip">Princess</span>
+      <span class="title-chip">Cuddle Cakes</span>
+      <span class="title-chip">My Queen</span>
+      <span class="title-chip">Heart Owner</span>
+      <span class="title-chip">Sharon</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TIMELINE ===================== -->
+<section id="timeline">
+  <div class="eyebrow" data-reveal>Our Story, So Far</div>
+  <div class="timeline-wrap">
+    <div class="t-item" data-reveal>
+      <div class="t-dot"></div>
+      <div class="t-date">17 January 2024</div>
+      <div class="t-title">The day it began</div>
+      <div class="t-text">A date, — the first page of a story we are still writing together.</div>
+    </div>
+    <div class="t-item" data-reveal>
+      <div class="t-dot"></div>
+      <div class="t-date">— January 2025 —</div>
+      <div class="t-title">Goodbye for now</div>
+      <div class="t-text">After spending almost everyday seeing each in 2024,we did not anticipate the separation that would come after. And honestly, none of us were prepared for what 2025 had in store for us.</div>
+    </div>
+    <div class="t-item" data-reveal>
+      <div class="t-dot"></div>
+      <div class="t-date">— 17 January 2026 —</div>
+      <div class="t-title">We pushed through</div>
+      <div class="t-text">Despite the IMPOSSIBLE hurdles we faced in 2025, we managed to make it to our 2nd year anniversary together covered in grace.</div>
+    </div>
+    <div class="t-item" data-reveal>
+      <div class="t-dot"></div>
+      <div class="t-date">1 July 2026</div>
+      <div class="t-title">You are now Twenty</div>
+      <div class="t-text">The girl I fell for becomes the queen the whole world should kneel for. Today, it's all for her.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== GALLERY ===================== -->
+<section id="gallery">
+  <div class="gallery-head" data-reveal>
+    <div class="eyebrow" style="justify-content:center;">The Gallery</div>
+    <h2>Ten Memories of YOU</h2>
+    <p>Look how beautiful you are.</p>
+  </div>
+  <div class="gallery-grid">
+    <!-- PHOTO 1 -->
+    <div class="frame" data-reveal>
+      <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+      <img src="IMG-20260630-WA0077.jpg" alt="Sharon" style="display:block;">
+      <div class="cap">Sexy</div>
+    </div>
+    <!-- PHOTO 2 -->
+    <div class="frame" data-reveal>
+      <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+      <img src="IMG-20260613-WA0031.jpg" alt="Sharon" style="display:block;">
+      <div class="cap">Goofy</div>
+    </div>
+    <!-- PHOTO 3 -->
+    <div class="frame" data-reveal>
+      <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+      <img src="IMG-20260611-WA0020.jpg" alt="Sharon" style="display:block;">
+      <div class="cap">Smart</div>
+    </div>
+    <!-- PHOTO 4 -->
+    <div class="frame" data-reveal>
+      <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+      <img src="IMG-20260604-WA0057.jpg" alt="Sharon" style="display:block;">
+      <div class="cap">Intelligent</div>
+    </div>
+    <!-- PHOTO 5 -->
+    <div class="frame" data-reveal>
+      <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+      <img src="IMG-20260524-WA0020.jpg" alt="Sharon" style="display:block;">
+      <div class="cap">Amazing</div>
+    </div>
+    <!-- PHOTO 6 -->
+    <div class="frame" data-reveal>
+      <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+      <img src="IMG-20260428-WA0027.jpg" alt="Sharon" style="display:block;">
+      <div class="cap">Humble</div>
+    </div>
+    <!-- PHOTO 7 -->
+    <div class="frame" data-reveal>
+      <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+      <img src="IMG-20260408-WA0048.jpg" alt="Sharon" style="display:block;">
+      <div class="cap">Wise</div>
+    </div>
+    <!-- PHOTO 8 -->
+    <div class="frame" data-reveal>
+      <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+      <img src="IMG-20250706-WA0017.jpg" alt="Sharon" style="display:block;">
+      <div class="cap">Chosen</div>
+    </div>
+    <!-- PHOTO 9 -->
+    <div class="frame" data-reveal>
+      <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+      <img src="IMG-20260423-WA0020.jpg" alt="Sharon" style="display:block;">
+      <div class="cap">Loving</div>
+    </div>
+    <!-- PHOTO 10 -->
+    <div class="frame" data-reveal>
+      <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+      <img src="IMG-20260429-WA0081.jpg" alt="Sharon" style="display:block;">
+      <div class="cap">Mine</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== POEM ===================== -->
+<section id="poem">
+  <div class="poem-wrap">
+    <div class="poem-head" data-reveal>
+      <div class="eyebrow" style="justify-content:center;">A Letter, In Verse</div>
+      <h2>To the Keeper of My Heart</h2>
+    </div>
+
+    <p class="stanza"><span class="dropcap">O</span>on the seventeenth of a random January afternoon,
+    Do you remember the day?
+    when you walked quietly into my life
+    and every quiet thing in me began to burn.
+    I did not know that year would hold a queen —
+    I only knew I'd never felt so <em>seen</em>.</p>
+
+    <p class="stanza">They call you Sharon on your certificate of birth,
+    but I have given you names that reflect who you truly are to me —
+    <em>mama</em> when you hold the whole of my world together,
+    <em>princess</em> when you laugh and light the room in flames,
+    <em>cuddle cakes</em> for every soft and stolen hour,
+    <em>my queen</em> because you wear your kindness like a crown of power.</p>
+
+    <p class="stanza">Twenty years the earth has carried you toward me,
+    twenty years of becoming who you are —
+    fierce and gentle, certain and still learning,
+    closer to my chest than any star heartbeat I have had
+    I watched a girl I loved become a woman I admire,
+    and somehow, still, you make my whole world catch fire.</p>
+
+    <p class="stanza">So today the may candles not only light the cake alone —
+    may they light the path that brought you here, to me, to <em>us</em>.
+    </p>
+
+    <p class="stanza">Happy birthday, <em>my queen</em>.
+    May twenty be the year the world finally sees
+    a fraction of the woman I have known all along —
+    and may every year after find you here, with me,
+    wrapped in love,
+    because loving you, babey, is the easiest thing I've ever known.</p>
+
+    <p class="poem-sign">— always yours</p>
+  </div>
+</section>
+
+<!-- ===================== CLOSING ===================== -->
+<section id="closing">
+  <div class="candle"><div class="flame"></div></div>
+  <h2>Twenty looks beautiful on you, mama.</h2>
+  <p class="small">To the girl who became my favorite person, and the woman I get to love for every birthday after this one.</p>
+  <p class="signature">Forever yours, Tee ♥</p>
+</section>
+
+<footer>Made with love — for Mrs. Ryan — 01.07</footer>
+
+<script>
+  // ---------- Seal intro ----------
+  const sealOverlay = document.getElementById('seal-overlay');
+  const sealBtn = document.getElementById('seal-btn');
+  const audio = document.getElementById('bg-audio');
+  const musicToggle = document.getElementById('music-toggle');
+
+  sealBtn.addEventListener('click', () => {
+    sealOverlay.classList.add('opened');
+    // attempt autoplay on this user gesture
+    audio.volume = 0.65;
+    audio.play().then(() => {
+      musicToggle.classList.remove('paused');
+    }).catch(() => {
+      musicToggle.classList.add('paused');
+    });
+  });
+
+  musicToggle.addEventListener('click', () => {
+    if (audio.paused) {
+      audio.play();
+      musicToggle.classList.remove('paused');
+    } else {
+      audio.pause();
+      musicToggle.classList.add('paused');
+    }
+  });
+
+  // ---------- Live day counter since 17 Jan 2024 ----------
+  const start = new Date('2024-01-17T00:00:00');
+  function updateDays(){
+    const now = new Date();
+    const diff = Math.floor((now - start) / (1000*60*60*24));
+    document.getElementById('days-count').textContent = diff.toString().padStart(3,'0');
+  }
+  updateDays();
+  setInterval(updateDays, 60000);
+
+  // ---------- Scroll reveal ----------
+  const revealEls = document.querySelectorAll('[data-reveal], .stanza');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, {threshold:0.18});
+  revealEls.forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
